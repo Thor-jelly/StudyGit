@@ -15,6 +15,8 @@
 
 Windows打开`Git Bash`输入`git --version`查看当前安装git版本信息，如果是Mac直接打开命令行输入`git --version`。
 
+Mac安装git `brew install git`
+
 # Git最小配置
 
 ```
