@@ -390,11 +390,12 @@ Changes to be committed:
    这将强制删除名为 `<branch-name>` 的分支，即使分支未合并。
 
 7. **查看远程分支**：
+   
    ```sh
    git branch -r
    ```
    这将列出所有远程分支。
-
+   
 8. **查看所有分支（包括本地和远程）**：
    ```sh
    git branch -a
