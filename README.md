@@ -2,10 +2,10 @@
 
 # Git学习整理
 
-> 更新2019-3-17
+> 更新2019-3-17 2023-8-1
 >
 > 学习自  
-> [极客时间-玩转Git三剑客](https://time.geekbang.org/course/intro/145)  
+> [苏玲《玩转Git三剑客》-极客时间](https://time.geekbang.org/course/intro/145)  
 > [Git官网](https://git-scm.com/)  
 > [常用 Git 命令清单](http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)   
 
@@ -68,8 +68,6 @@ ls -al
 1. 我们自己的**工作目录**
 2. `git add files`之后文件进入的**暂存区**
 3. `git commit`之后文件进入的**版本历史**
-
-
 
 如果有远程仓库，给Git正在的区域分布为下面四个区域：
 
@@ -251,9 +249,27 @@ Date:   Sun Mar 17 14:49:31 2019 +0800
   - 添加参数`--online`：`--pretty=oneline --abbrev-commit` 的简化用法。
   - 添加参数`--graph`：显示 ASCII 图形表示的分支合并历史。
 
-
-
 至此一次简单的git提交就完成了。
+
+## Git对象的彼此关系
+在Git版本控制系统中，`commit`、`tree`和`blob`是三种核心对象，它们之间存在重要的关系，构成了Git的版本管理机制。
+
+  1. **Blob（二进制大对象）**：Blob对象代表的是文件内容。每个文件在Git中都被表示为一个Blob对象，它包含了文件的实际内容。Blob对象的哈希是根据文件内容计算得出的。
+  2. **Tree（树对象）**：Tree对象代表的是一个目录。它包含了目录中的文件和子目录的引用，以及每个文件和子目录的模式、类型和哈希。Tree对象构成了文件和目录的层次结构，可以看作是一个快照。
+  3. **Commit（提交对象）**：Commit对象代表的是一个代码库的快照，它记录了一次代码提交的元数据，包括作者、提交者、日期、提交消息等信息。每个Commit对象都包含一个指向树对象的引用，表示该次提交的文件结构快照。此外，每个Commit对象也可以包含一个或多个父Commit的引用，形成提交历史的链条。
+
+  因此，它们之间的关系可以总结为：
+
+  - 一个**Commit**对象指向一个**Tree**对象，表示提交的文件结构快照。
+  - 一个**Tree**对象包含多个**Blob**对象和子**Tree**对象，构成了目录和文件的层次结构。
+
+这种关系允许Git跟踪文件和目录的变化，通过构建树状结构来管理文件的版本历史。每次提交都会创建一个新的Commit对象，其中包含指向当前版本文件结构的Tree对象引用，以及指向一个或多个父提交的引用，从而形成一个有向无环图，代表了代码库的版本历史。这就是Git的核心版本控制机制。
+
+![苏玲《玩转Git三剑客》-极客时间](commit:tree:blob之间关系.png)
+
+### `git cat-file`命令
+
+`git cat-file`命令用于显示Git对象的内容或类型信息。Git对象可以是文件、提交、树对象、标签对象等。通过使用`git cat-file`，你可以检查对象的内容，类型和大小等信息。
 
 # git修改文件名称
 
@@ -331,6 +347,116 @@ Changes to be committed:
       
           add four files
       ```
+
+# `git branch`命令
+
+`git branch`命令用于查看、创建、删除和切换分支。以下是`git branch`命令的一些常见用法：
+
+1. **查看分支**：
+   
+   ```sh
+   git branch
+   ```
+   这将列出所有本地分支，并在当前分支前面加上一个星号。
+   
+2. **创建分支**：
+   ```sh
+   git branch <branch-name>
+   ```
+   这将创建一个名为 `<branch-name>` 的新分支，但不会切换到这个分支。
+
+3. **切换分支**：
+   ```sh
+   git checkout <branch-name>
+   ```
+   这将切换到名为 `<branch-name>` 的分支。
+
+4. **创建并切换到新分支**：
+   ```sh
+   git checkout -b <new-branch-name>
+   ```
+   这将创建一个新分支并立即切换到这个分支。
+
+5. **删除分支**：
+   ```sh
+   git branch -d <branch-name>
+   ```
+   这将删除名为 `<branch-name>` 的分支，但只会在分支已经合并到其他分支时生效。
+
+6. **强制删除分支**：
+   ```sh
+   git branch -D <branch-name>
+   ```
+   这将强制删除名为 `<branch-name>` 的分支，即使分支未合并。
+
+7. **查看远程分支**：
+   ```sh
+   git branch -r
+   ```
+   这将列出所有远程分支。
+
+8. **查看所有分支（包括本地和远程）**：
+   ```sh
+   git branch -a
+   ```
+   这将列出所有本地和远程分支。
+
+以上只是`git branch`命令的一些用法示例。分支在Git中是非常重要的概念，它允许你在同一个代码库中并行开发不同的功能或修复，以及管理代码库的版本历史。
+
+# `git checkout`命令
+
+`git checkout`命令在Git中具有多种用途，主要用于切换分支、恢复文件、查看提交等操作。以下是`git checkout`命令的一些常见用法：
+
+1. **切换分支**：
+   
+   ```sh
+   git checkout <branch-name>
+   ```
+   这将切换到指定的分支，将工作目录和索引更新为该分支的状态。
+   
+2. **创建并切换到新分支**：
+   ```sh
+   git checkout -b <new-branch-name>
+   ```
+   这将创建一个新分支并切换到该分支，相当于执行了`git branch <new-branch-name>`和`git checkout <new-branch-name>`两个操作。
+
+3. **切换到某个提交**（进入分离头指针状态）：
+   ```sh
+   git checkout <commit-hash>
+   ```
+   这将使你进入分离头指针状态，工作目录会与指定提交的内容相符，但不再位于任何分支上。
+
+4. **切换到上一个分支**：
+   ```sh
+   git checkout -
+   ```
+   这将切换回之前所在的分支。
+
+5. **恢复文件**：
+   ```sh
+   git checkout -- <file-name>
+   ```
+   这会丢弃工作区中指定文件的更改，恢复到最近一次提交的状态。
+
+6. **查看提交的内容**：
+   ```sh
+   git checkout <commit-hash> -- <file-name>
+   ```
+   这将从指定提交中提取指定文件的内容，但不会切换分支。
+
+7. **恢复分支的更改**（使用 `-p` 选项交互式选择部分更改）：
+   ```sh
+   git checkout <branch-name> -- <file-name>
+   git checkout -p <branch-name> -- <file-name>
+   ```
+   这会从指定分支中恢复指定文件的更改到当前分支。
+
+8. **还原所有更改**（危险操作，慎用）：
+   ```sh
+   git checkout .
+   ```
+
+请根据你的需求选择合适的用法。使用`git checkout`命令时，务必小心，避免不小心丢失或覆盖重要的更改。
 
 # `git reset` 命令简单介绍
 
