@@ -463,4 +463,4 @@ Changes to be committed:
 
 - `git reset --hard`：重置暂存区与工作区，与上一次commit保持一致
 - `git reset --hard HEAD^`：用`HEAD`表示当前版本，上一个版本就是`HEAD^`，当然往上100个版本写100个`^`比较容易数不过来，所以写成`HEAD~100`。
-- ` git reset --hard [commitId]`：commitId可以通过`git log --graph --oneline`获取的commitId就是最短的id
+- `git reset --hard [commitId]`：commitId可以通过`git log --graph --oneline`获取的commitId就是最短的id
